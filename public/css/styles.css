@@ -1,0 +1,157 @@
+/*main{
+    position: relative;
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.form_container{
+    position: relative;
+    height: 45%;
+    width: 35%;
+    border: 1px solid #24649c;
+    border-radius: 30px;
+    padding: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.form_container_heading{
+    font-size: 1.2rem;
+    font-family: sans-serif;
+    color: #666;
+    position: absolute;
+    top: 15%;
+}
+
+.form_container_label{
+    display: block;
+    margin-bottom: 5px;
+    font-size: 16px;
+    color: #333;
+    font-weight: bold;
+}
+
+.form_container_input{
+    padding: 15px;
+    width: 50%;
+    border-radius: 5px;
+    border: 2px solid #666;
+}
+
+.form_container_button{
+    width: 100%;
+    padding: 10px;
+    background-color: #24649c;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+}*/
+
+
+
+/* login */
+
+/* Style global pour le formulaire */
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background-color: #f0f2f5;
+}
+
+main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.form_container {
+    max-width: 400px;
+    width: 100%;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+}
+
+/* Style pour le titre du formulaire */
+.form_container_heading {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 24px;
+    color: #333;
+}
+
+/* Style pour les labels */
+.form_container_label {
+    font-size: 16px;
+    color: #333;
+    font-weight: bold;
+    align-self: flex-start;
+}
+
+/* Style pour les champs de saisie */
+.form_container_input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+/* Style pour le bouton de soumission */
+.form_container_button {
+    width: auto;
+    padding: 10px 20px;
+    background-color: #24649c;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    align-self: flex-start;
+}
+
+/* Effet au survol du bouton */
+.form_container_button:hover {
+    background-color: #24649c;
+}
+
+/* Style pour les liens */
+.form_links {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.form_link {
+    color: #145ead;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.form_link:hover {
+    text-decoration: underline;
+}
+
+
+
