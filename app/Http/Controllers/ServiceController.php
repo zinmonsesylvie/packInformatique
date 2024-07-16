@@ -15,7 +15,7 @@ class ServiceController extends Controller
     public function index()
     {
         $services = Service::all();
-        return view('serviceall', compact('services'));
+        return view('services.serviceall', compact('services'));
     }
 
     /**
@@ -23,13 +23,18 @@ class ServiceController extends Controller
      */
     public function create()
     {
-        return view('service');
+        return view('services.service');
     }
 
 
     public function showRegistrationForm() {
         $structures = Structure::all();
-        return view('service', compact('structures'));
+        return view('services.service', compact('structures'));
+    }
+
+    public function showRegistration() {
+        $structures = Structure::all();
+        return view('services.editservice', compact('structures'));
     }
 
     /**
@@ -46,7 +51,7 @@ class ServiceController extends Controller
         $service->libelle = $request->libelle;
         $service->structure_id = $request->structure_id;
         $service->save();
-        return view('serviceall');
+        return view('services.serviceall');
     }
 
     /**
@@ -70,8 +75,8 @@ class ServiceController extends Controller
             return redirect()->back()->with('error', 'Service not found');
         }
 
-    // Retourner la vue avec la structure à éditer
-    return view('editservice', compact('service'));
+    // Retourner la vue avec le service à éditer
+    return view('services.editservice', compact('service'));
     }
 
     /**
@@ -96,7 +101,7 @@ class ServiceController extends Controller
     $service->update($validatedData);
 
     // Rediriger avec un message de succès
-    return view('serviceall');
+    return view('services.serviceall');
     }
 
     /**

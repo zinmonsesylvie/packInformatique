@@ -27,7 +27,7 @@ Route::get('/', function () {
 });
 
 Route::get('/home', function () {
-    return view('home');
+    return view('dashboard');
 })->name('home');
 
 
@@ -44,9 +44,10 @@ Route::middleware(['auth'])->group(function(){
     Route::get('service', [ServiceController::class, 'create'])->name('service');
     Route::get('afficherService', [ServiceController::class, 'index'])->name('afficherService');
     Route::get('service', [ServiceController::class, 'showRegistrationForm'])->name('service');
+    Route::get('service', [ServiceController::class, 'showRegistration'])->name('service');
     Route::post('service', [ServiceController::class, 'store']);
-    //Route::get('editService/{id}', [ServiceController::class, 'edit'])->name('editService');
-    //Route::put('updateService/{id}', [ServiceController::class, 'update'])->name('updateService');
+    Route::get('editService/{id}', [ServiceController::class, 'edit'])->name('editService');
+    Route::put('/service/update/{id}', [ServiceController::class, 'update'])->name('updateService');
     Route::delete('destroyService', [ServiceController::class, 'destroy'])->name('destroyService');
 
     //route pour les materiels
@@ -61,14 +62,17 @@ Route::middleware(['auth'])->group(function(){
     Route::get('agent', [AgentController::class, 'create'])->name('agent');
     Route::get('afficherAgent', [AgentController::class, 'index'])->name('afficherAgent');
     Route::get('agent', [AgentController::class, 'showRegistrationForm'])->name('agent');
-    Route::post('agent', [AgentController::class, 'store']);Route::put('editService', [ServiceController::class, 'edit'])->name('editService');
-    Route::put('editAgent', [AgentController::class, 'edit'])->name('editAgent');
+    Route::post('agent', [AgentController::class, 'store']);
+    Route::get('editAgent/{id}', [AgentController::class, 'edit'])->name('editAgent');
+    Route::put('updateAgent/{id}', [AgentController::class, 'update'])->name('updateAgent');
     Route::delete('destroyAgent', [AgentController::class, 'destroy'])->name('destroyAgent');
     
     //route logiciel
     Route::get('logiciel', [LogicielController::class, 'create'])->name('logiciel');
     Route::get('afficherLogiciel', [LogicielController::class, 'index'])->name('afficherLogiciel');
     Route::post('logiciel', [LogicielController::class, 'store']);
+    Route::get('editLogiciel/{id}', [LogicielController::class, 'edit'])->name('editLogiciel');
+    Route::put('updateLogiciel/{id}', [LogicielController::class, 'update'])->name('updateLogiciel');
 
 
     //route maintenance

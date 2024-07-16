@@ -14,7 +14,7 @@ class StructureController extends Controller
     public function index()
     {
         $structures = Structure::all();
-        return view('structureall', compact('structures'));
+        return view('structures.structureall', compact('structures'));
     }
 
     /**
@@ -22,7 +22,7 @@ class StructureController extends Controller
      */
     public function create():view
     {
-        return view('structure');
+        return view('structures.structure');
     }
 
 
@@ -47,7 +47,7 @@ class StructureController extends Controller
         ]);
 
         // Redirection avec un message de succès
-        return view('structureall');
+        return view('structures.structureall');
     }
 
     /**
@@ -64,15 +64,15 @@ class StructureController extends Controller
     public function edit(string $id)
     {
          // Récupérer la structure par son ID
-    $structure = Structure::find($id);
+         $structure = Structure::find($id);
 
-    // Vérifier si la structure existe
-    if (!$structure) {
-        return redirect()->back()->with('error', 'Structure not found');
-    }
+        // Vérifier si la structure existe
+        if (!$structure) {
+            return redirect()->back()->with('error', 'Structure not found');
+        }
 
-    // Retourner la vue avec la structure à éditer
-    return view('editstructure', compact('structure'));
+        // Retourner la vue avec la structure à éditer
+        return view('structures.editstructure', compact('structure'));
     }
 
     /**
@@ -99,7 +99,7 @@ class StructureController extends Controller
     $structure->update($validatedData);
 
     // Rediriger avec un message de succès
-    return view('structureall');
+    return view('structures.structureall');
     }
 
     /**

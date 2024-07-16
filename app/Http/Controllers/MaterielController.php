@@ -16,7 +16,7 @@ class MaterielController extends Controller
     public function index()
     {
         $materiels = Materiel::all();
-        return view('materielall', compact('materiels'));
+        return view('materiels.materielall', compact('materiels'));
     }
 
     
@@ -25,13 +25,13 @@ class MaterielController extends Controller
      */
     public function create()
     {
-        return view('materiel');
+        return view('materiels.materiel');
     }
 
     public function showRegistrationForm() {
         $agents = Agent::all();
     
-        return view('materiel', compact('agents'));
+        return view('materiels.materiel', compact('agents'));
     }
 
 
@@ -91,7 +91,7 @@ class MaterielController extends Controller
     $materiel->save();
 
     // Redirection ou retour de la vue
-    return view('materielall');
+    return view('materiels.materielall');
 }
 
 

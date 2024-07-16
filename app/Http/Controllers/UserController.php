@@ -90,7 +90,7 @@ class UserController extends Controller
         // Création du token
         $token = $user->createToken('authToken')->plainTextToken;
         // Redirection vers la page d'accueil avec un message de succès
-        return view('home');
+        return view('dashboard');
     } else {
         return response()->json(["message" => "Identifiants incorrects"], 401);
     }

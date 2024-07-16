@@ -15,7 +15,7 @@ class AgentController extends Controller
     public function index()
     {
         $agents = Agent::all();
-        return view('agentall', compact('agents'));
+        return view('agents.agentall', compact('agents'));
     }
 
     /**
@@ -23,12 +23,12 @@ class AgentController extends Controller
      */
     public function create()
     {
-        return view('agent');
+        return view('agents.agent');
     }
 
     public function showRegistrationForm() {
         $services = Service::all();
-        return view('agent', compact('services'));
+        return view('agents.agent', compact('services'));
     }
 
     /**
@@ -52,7 +52,7 @@ class AgentController extends Controller
         $agent->service_id = $request->service_id;
         $agent->save();
 
-        return view('agentall');
+        return view('agents.agentall');
         
     }
 
@@ -74,7 +74,16 @@ class AgentController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        // Récupérer la structure par son ID
+        $agent = Agent::find($id);
+
+        // Vérifier si la structure existe
+        if (!$agent) {
+            return redirect()->back()->with('error', 'Agent not found');
+        }
+
+        // Retourner la vue avec la structure à éditer
+        return view('agents.editagent', compact('agent'));
     }
 
     /**
@@ -103,7 +112,7 @@ class AgentController extends Controller
     $agent->update($validatedData);
 
     // Rediriger avec un message de succès
-    return view('agentall');
+    return view('agents.agentall');
     }
 
     /**

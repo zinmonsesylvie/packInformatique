@@ -14,7 +14,7 @@ class LogicielController extends Controller
     public function index()
     {
         $logiciels = Logiciel::all();
-        return view('logicielall', compact('logiciels'));
+        return view('logiciels.logicielall', compact('logiciels'));
     }
 
     /**
@@ -22,7 +22,7 @@ class LogicielController extends Controller
      */
     public function create()
     {
-        return view('logiciel');
+        return view('logiciels.logiciel');
     }
 
     /**
@@ -47,7 +47,7 @@ class LogicielController extends Controller
         $logiciel->date_achat_licence = $request->date_achat_licence;
         $logiciel->date_expiration = $request->date_expiration;
         $logiciel->save();
-        return view('home');
+        return view('dashboard');
 
     }
 
@@ -64,7 +64,16 @@ class LogicielController extends Controller
      */
     public function edit(string $id)
     {
-        //
+         // Récupérer la structure par son ID
+         $logiciel = Logiciel::find($id);
+
+        // Vérifier si la structure existe
+        if (!$logiciel) {
+            return redirect()->back()->with('error', 'Logiciel not found');
+        }
+
+        // Retourner la vue avec la structure à éditer
+        return view('logiciels.editlogiciel', compact('logiciel'));
     }
 
     /**
@@ -72,7 +81,30 @@ class LogicielController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        // Valider les données
+    $validatedData = $request->validate([
+            'libelle' => 'required|string',
+            'licence' => 'required|string',
+            'version' => 'required|string',
+            'editeur' => 'required|string',
+            'date_achat_licence' => 'required|integer',
+            'date_expiration' => 'required|integer',
+    ]);
+
+    // Récupérer la structure par son ID
+    $logiciel = Logiciel::find($id);
+
+    // Vérifier si la structure existe
+    if (!$logiciel) {
+        return redirect()->back()->with('error', 'Logiciel not found');
+    }
+
+    // Mettre à jour la structure
+    $logiciel->update($validatedData);
+
+    // Rediriger avec un message de succès
+    return view('logiciels.logicielall');
+
     }
 
     /**
