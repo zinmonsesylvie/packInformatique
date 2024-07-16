@@ -13,8 +13,8 @@ class StructureController extends Controller
      */
     public function index()
     {
-        $data = Structure::all();
-        return response()->json($data,200);
+        $structures = Structure::all();
+        return view('structureall', compact('structures'));
     }
 
     /**
@@ -24,6 +24,7 @@ class StructureController extends Controller
     {
         return view('structure');
     }
+
 
     /**
      * Store a newly created resource in storage.
@@ -46,7 +47,7 @@ class StructureController extends Controller
         ]);
 
         // Redirection avec un message de succès
-        return redirect()->back()->with('success', 'structure créé avec succès!');
+        return view('structureall');
     }
 
     /**
@@ -62,7 +63,16 @@ class StructureController extends Controller
      */
     public function edit(string $id)
     {
-        //
+         // Récupérer la structure par son ID
+    $structure = Structure::find($id);
+
+    // Vérifier si la structure existe
+    if (!$structure) {
+        return redirect()->back()->with('error', 'Structure not found');
+    }
+
+    // Retourner la vue avec la structure à éditer
+    return view('editstructure', compact('structure'));
     }
 
     /**
@@ -70,7 +80,26 @@ class StructureController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+         // Valider les données
+    $validatedData = $request->validate([
+        'libelle' => 'required|string|max:255',
+        'sigle' => 'required|string|max:255',
+        'adresse' => 'required|string|max:255',
+    ]);
+
+    // Récupérer la structure par son ID
+    $structure = Structure::find($id);
+
+    // Vérifier si la structure existe
+    if (!$structure) {
+        return redirect()->back()->with('error', 'Structure not found');
+    }
+
+    // Mettre à jour la structure
+    $structure->update($validatedData);
+
+    // Rediriger avec un message de succès
+    return view('structureall');
     }
 
     /**
@@ -78,6 +107,13 @@ class StructureController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        // Récupérer la structure par son ID
+        $structure = Structure::findOrFail($id);
+
+        // Supprimer la structure
+        $structure->delete();
+
+        // Redirection avec un message de succès
+        return redirect()->route('afficherStructure');
     }
 }

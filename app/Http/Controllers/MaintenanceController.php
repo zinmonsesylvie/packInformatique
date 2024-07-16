@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Materiel;
 use App\Models\Maintenance;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -22,8 +23,14 @@ class MaintenanceController extends Controller
      */
     public function create()
     {
-        //
+        return view('maintenance');
     }
+
+    public function showRegistrationForm() {
+        $materiels = Materiel::all();
+        return view('maintenance', compact('materiels'));
+    }
+
 
     /**
      * Store a newly created resource in storage.

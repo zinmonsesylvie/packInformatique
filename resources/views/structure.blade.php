@@ -7,20 +7,16 @@
     <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
-
-<div class="container">
-    <h2>Formulaire d'enregistrement des structure</h2>
-    <form action="{{ route('structure') }}" method="POST">
+    <form class="form_container" action="{{ route('structure') }}" method="POST">
         @csrf
-        <div class="form-group">
-            <label for="libelle">Nom de structure:</label>
-            <input type="text" id="libelle" name="libelle" required>
-            <label for="sigle">Sigle</label>
-            <input type="text" id="sigle" name="sigle" required>
-            <label for="adresse">Adresse</label>
-            <input type="text" id="adresse" name="adresse" required>
-        </div>
-        <button type="submit">Enregistrer</button>
+        <h2 class="form_container_heading">Formulaire d'enregistrement des structures</h2>
+            <label class="form_container_label" for="libelle">Nom de la structure</label>
+            <input class="form_container_input" type="text" id="libelle" name="libelle" required>
+            <label class="form_container_label" for="sigle">Sigle</label>
+            <input class="form_container_input" type="text" id="sigle" name="sigle" required>
+            <label class="form_container_label" for="adresse">Adresse</label>
+            <input class="form_container_input" type="text" id="adresse" name="adresse" required>
+        <button class="form_container_button" type="submit">Enregistrer</button>
     </form>
 </div>
 

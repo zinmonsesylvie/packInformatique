@@ -13,8 +13,8 @@ class LogicielController extends Controller
      */
     public function index()
     {
-        $data = Logiciel::all();
-        return response()->json($data,200);
+        $logiciels = Logiciel::all();
+        return view('logicielall', compact('logiciels'));
     }
 
     /**
@@ -22,7 +22,7 @@ class LogicielController extends Controller
      */
     public function create()
     {
-        //
+        return view('logiciel');
     }
 
     /**
@@ -31,23 +31,23 @@ class LogicielController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'libelle' => 'required|string|255',
+            'libelle' => 'required|string',
             'licence' => 'required|string',
             'version' => 'required|string',
             'editeur' => 'required|string',
-            'date_achat_licence' => 'required|date',
-            'date_expiration' => 'required|date',
+            'date_achat_licence' => 'required|integer',
+            'date_expiration' => 'required|integer',
         ]);
 
-        Logiciel::create([
-            'libelle' => $request->libelle,
-            'licence' => $request->licence,
-            'version' => $request->version,
-            'editeur' => $request->editeur,
-            'date_achat_licence' => $request->date_achat_licence,
-            'date_expiration' => $request->date_expiration,
-        ]);
-        return response()->json('logiciel enregistré avec succès', 200);
+        $logiciel = New Logiciel();
+        $logiciel->libelle = $request->libelle;
+        $logiciel->licence = $request->licence;
+        $logiciel->version = $request->version;
+        $logiciel->editeur = $request->editeur;
+        $logiciel->date_achat_licence = $request->date_achat_licence;
+        $logiciel->date_expiration = $request->date_expiration;
+        $logiciel->save();
+        return view('home');
 
     }
 

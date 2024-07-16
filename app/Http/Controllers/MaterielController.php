@@ -2,12 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use Carbon\Carbon;
-use App\Models\Etat;
 use App\Models\Agent;
 use App\Models\Materiel;
 use Illuminate\Http\Request;
-use App\Models\Changementetat;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 
 class MaterielController extends Controller
 {
@@ -16,10 +15,11 @@ class MaterielController extends Controller
      */
     public function index()
     {
-        $data = Materiel::all();
-        return response()->json($data,200);
+        $materiels = Materiel::all();
+        return view('materielall', compact('materiels'));
     }
 
+    
     /**
      * Show the form for creating a new resource.
      */
@@ -29,90 +29,71 @@ class MaterielController extends Controller
     }
 
     public function showRegistrationForm() {
-        $etats = Etat::all();
-        return view('materiel', compact('etats'));
+        $agents = Agent::all();
+    
+        return view('materiel', compact('agents'));
     }
+
 
     /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
-    {
-        $request->validate([
-            'designation' => 'required|string|max:255',
-            'annee_de_service' => 'required|integer',
-            'date_max_acquisition' => 'required|integer',
-            'fabriquant' => 'required|string',
-            'modele' => 'required|string',
-            'processeur' => 'required|string',
-            'memoire_ram' => 'required|string',
-            'capacite_disque_dur' => 'required|string',
-            'type_disque_dur' => 'required|string',
-            'duree_de_vie' => 'required|integer',
-            'age_desuet' => 'required|integer',
-            'temps_max_acquisition' => 'required|integer',
-            'etat_id' => 'required|integer',
-            'nom' => 'required|string|max:255',
-            'prenom' => 'required|string|max:255',
-            'email' => 'required|string|max:255',
-            'fonction' => 'required|string|max:255',
-            'service_id' => 'required',
-        ]);
+{
+    // Validation des champs de la requête
+    $request->validate([
+        'designation' => 'required|string|max:255',
+        'annee_de_service' => 'required|integer',
+        'date_max_acquisition' => 'required|integer',
+        'fabriquant' => 'required|string|max:255',
+        'modele' => 'required|string|max:255',
+        'processeur' => 'required|string|max:255',
+        'memoire_ram' => 'required|string|max:255',
+        'capacite_disque_dur' => 'required|string|max:255',
+        'type_disque_dur' => 'required|string|max:255',
+        'agent_id' => 'required|integer',
+    ]);
 
-        //création de l'agent
+    // Création d'une nouvelle instance de Materiel
+    $materiel = new Materiel();
+    $materiel->designation = $request->designation;
+    $materiel->annee_de_service = $request->annee_de_service;
+    $materiel->date_max_acquisition = $request->date_max_acquisition;
+    $materiel->fabriquant = $request->fabriquant;
+    $materiel->modele = $request->modele;
+    $materiel->processeur = $request->processeur;
+    $materiel->memoire_ram = $request->memoire_ram;
+    $materiel->capacite_disque_dur = $request->capacite_disque_dur;
+    $materiel->type_disque_dur = $request->type_disque_dur;
 
-        //création du matériel
-        $materiel = New Materiel();
-        $materiel->designation = $request->designation;
-        $materiel->annee_de_service = $request->annee_de_service;
-        $materiel->date_max_acquisition = $request->date_max_acquisition;
-        $materiel->fabriquant = $request->fabriquant;
-        $materiel->modele = $request->modele;
-        $materiel->processeur = $request->processeur;
-        $materiel->memoire_ram = $request->memoire_ram;
-        $materiel->capacite_disque_dur = $request->capacite_disque_dur;
-        $materiel->type_disque_dur = $request->type_disque_dur;
-        $materiel->duree_de_vie = $request->duree_de_vie;
-        $materiel->age_desuet = $request->age_desuet;
-        $materiel->temps_max_acquisition = $request->temps_max_acquisition;
-        $agent = New Agent();
-        $agent->nom = $request->nom;
-        $agent->prenom = $request->prenom;
-        $agent->email = $request->email;
-        $agent->fonction = $request->fonction;
-        $agent->service_id = $request->service_id;
-        $agent->saved();
-        $materiel->agent_id = $agent->id;
-        $materiel->etat_id = $request->etat_id;
-        dd('$materiel');
-        $materiel->save();
-        return response()->json('materiel enregistré avec succès',200);
+    // Assignation de duree_de_vie en fonction de la designation
+    if ($materiel->designation == 'Ordinateur de bureau') {
+        $materiel->duree_de_vie = 6;
+    } elseif ($materiel->designation == 'Ordinateur portable') {
+        $materiel->duree_de_vie = 4;
+    } elseif ($materiel->designation == 'Imprimante') {
+        $materiel->duree_de_vie = 5;
+    } elseif ($materiel->designation == 'Copieur') {
+        $materiel->duree_de_vie = 5;
+    } elseif ($materiel->designation == 'Scanner') {
+        $materiel->duree_de_vie = 7;
+    } else {
+        $materiel->duree_de_vie = 0; // Valeur par défaut
     }
 
-    public function changement(){
-        $annee_actuelle = Carbon::now()->year;
-        $materiels = Materiel::all();
-        $ab=[];
-        foreach ($materiels as $materiel) {
-            $ab[]= $materiel->annee_de_service;
-        }
-        $annee_de_service = $ab[0];
-        $age = $annee_actuelle - $annee_de_service;
-        dd($annee_de_service);
-        if($age >= $materiel->duree_de_vie){
-            $materiel->etat_id = 'amortie';
-        }
-        else if($age = $materiel->age_desuet){
-            $materiel->etat_id = 'desuet';
-        }
-        else{
-            $materiel->etat_id = 'non fonctionnel';
-        }
-        $changement = New Changementetat();
-        $changement->date_changement = $request->date_changement;
-        $changement->save();
-        return response()->json('succès',200);
-    }
+    // Calcul des champs dérivés
+    $materiel->age_desuet = $materiel->duree_de_vie * 2;
+    $materiel->temps_max_acquisition = $materiel->duree_de_vie + 2;
+    $materiel->agent_id = $request->agent_id;
+    $materiel->user_id = Auth::user()->id;
+
+    // Enregistrement de l'instance de Materiel
+    $materiel->save();
+
+    // Redirection ou retour de la vue
+    return view('materielall');
+}
+
 
     /**
      * Display the specified resource.

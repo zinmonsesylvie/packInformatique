@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Agent;
+use App\Models\Service;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -13,8 +14,8 @@ class AgentController extends Controller
      */
     public function index()
     {
-        $data = Agent::all();
-        return response()->json($data,200);
+        $agents = Agent::all();
+        return view('agentall', compact('agents'));
     }
 
     /**
@@ -22,7 +23,12 @@ class AgentController extends Controller
      */
     public function create()
     {
-        //
+        return view('agent');
+    }
+
+    public function showRegistrationForm() {
+        $services = Service::all();
+        return view('agent', compact('services'));
     }
 
     /**
@@ -31,11 +37,11 @@ class AgentController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'nom' => 'required|string|255',
-            'prenom' => 'required|string|255',
-            'email' => 'required|string|255',
-            'fonction' => 'required|srting|255',
-            'service_id' => 'required',
+            'nom' => 'required|string',
+            'prenom' => 'required|string',
+            'email' => 'required|string|email|unique:agents,email',
+            'fonction' => 'required|string',
+            'service_id' => 'required|integer',
         ]);
 
         $agent = New Agent();
@@ -44,9 +50,9 @@ class AgentController extends Controller
         $agent->email = $request->email;
         $agent->fonction = $request->fonction;
         $agent->service_id = $request->service_id;
-        $agent->saved();
+        $agent->save();
 
-        return response()->json('agent enregistrer avec succès',200);
+        return view('agentall');
         
     }
 
@@ -76,7 +82,28 @@ class AgentController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        // Valider les données
+    $validatedData = $request->validate([
+        'nom' => 'required|string',
+        'prenom' => 'required|string',
+        'email' => 'required|string|email|unique:agents,email',
+        'fonction' => 'required|string',
+        'service_id' => 'required|integer',
+    ]);
+
+    // Récupérer la structure par son ID
+    $agent = Agent::find($id);
+
+    // Vérifier si la structure existe
+    if (!$agent) {
+        return redirect()->back()->with('error', 'Agent not found');
+    }
+
+    // Mettre à jour la structure
+    $agent->update($validatedData);
+
+    // Rediriger avec un message de succès
+    return view('agentall');
     }
 
     /**

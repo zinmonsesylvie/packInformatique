@@ -32,7 +32,7 @@ class Materiel extends Model
     /**
      * @var array
      */
-    protected $fillable = ['user_id', 'etat_id', 'designation', 'annee_de_service', 'date_max_acquisition', 'fabriquant', 'model', 'processeur', 'memoire_ram', 'capacite_disque_dur', 'type_disque_dur', 'duree_de_Vie', 'age_desuet', 'temps_max_acquisition', 'created_at', 'updated_at'];
+    protected $fillable = ['user_id','agent_id', 'designation', 'annee_de_service', 'date_max_acquisition', 'fabriquant', 'modele', 'processeur', 'memoire_ram', 'capacite_disque_dur', 'type_disque_dur', 'duree_de_vie', 'age_desuet', 'temps_max_acquisition', 'created_at', 'updated_at'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
@@ -58,11 +58,12 @@ class Materiel extends Model
         return $this->belongsTo('App\Models\User');
     }
 
+    public function agent()
+    {
+        return $this->belongsTo('App\Models\Agent');
+    }
+
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function etat()
-    {
-        return $this->belongsTo('App\Models\Etat');
-    }
 }

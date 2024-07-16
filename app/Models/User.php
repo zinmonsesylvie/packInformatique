@@ -50,4 +50,9 @@ class User extends Authenticatable
     {
         return $this->belongsTo('App\Models\Structure');
     }
+
+    public function materiels()
+    {
+        return $this->hasMany('App\Models\Materiel');
+    }
 }

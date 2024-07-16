@@ -17,8 +17,8 @@ return new class extends Migration
             $table->string('licence');
             $table->string('version');
             $table->string('editeur');
-            $table->date('date_achat_licence');
-            $table->date('date_expiration');
+            $table->integer('date_achat_licence');
+            $table->integer('date_expiration');
             $table->timestamps();
         });
     }

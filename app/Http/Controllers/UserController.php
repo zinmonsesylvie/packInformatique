@@ -15,8 +15,8 @@ class UserController extends Controller
      */
     public function index()
     {
-        $data = User::all();
-        return response()->json($data,200);
+        $users = User::all();
+        return view('userall', compact('users'));
     }
 
     /**
@@ -91,9 +91,7 @@ class UserController extends Controller
         $token = $user->createToken('authToken')->plainTextToken;
         // Redirection vers la page d'accueil avec un message de succès
         return view('home');
-        //return response()->json('succès');
     } else {
-        // Retourne une réponse JSON avec un statut 401 si les identifiants sont incorrects
         return response()->json(["message" => "Identifiants incorrects"], 401);
     }
 }
@@ -103,9 +101,21 @@ class UserController extends Controller
 {
     // Révoquer le token de l'utilisateur
     $request->user()->tokens()->delete();
+    //Retourner une réponse JSON confirmant la déconnexion
+    return view('auth.login');
+}
 
-    // Retourner une réponse JSON confirmant la déconnexion
-    return response()->json(["message" => "Déconnexion réussie"]);
+
+public function userconnecter()
+{
+    $user = Auth::user(); 
+    return view('partials.navbar', compact('user'));
+}
+
+public function showProfile()
+{
+    $user = Auth::user();
+    return view('partials.navbar', ['user' => $user]);
 }
 
     /**

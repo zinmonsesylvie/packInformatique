@@ -14,8 +14,8 @@ class ServiceController extends Controller
      */
     public function index()
     {
-        $data = Service::all();
-        return response()->json($data,200);
+        $services = Service::all();
+        return view('serviceall', compact('services'));
     }
 
     /**
@@ -42,11 +42,11 @@ class ServiceController extends Controller
             'structure_id' => 'required|integer',
         ]);
 
-        Service::create([
-            'libelle'=> $request->libelle,
-            'structure_id' => $request->structure_id,
-        ]);
-        return redirect()->back()->with('success', 'service créé avec succès!');
+        $service = New Service();
+        $service->libelle = $request->libelle;
+        $service->structure_id = $request->structure_id;
+        $service->save();
+        return view('serviceall');
     }
 
     /**
@@ -62,7 +62,16 @@ class ServiceController extends Controller
      */
     public function edit(string $id)
     {
-        //
+       // Récupérer le service par son ID
+       $service = Service::find($id);
+
+       // Vérifier si le service existe
+        if (!$service) {
+            return redirect()->back()->with('error', 'Service not found');
+        }
+
+    // Retourner la vue avec la structure à éditer
+    return view('editservice', compact('service'));
     }
 
     /**
@@ -70,7 +79,24 @@ class ServiceController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        // Valider les données
+    $validatedData = $request->validate([
+        'libelle' => 'required|string|max:255',
+    ]);
+
+    // Récupérer la structure par son ID
+    $service = Service::find($id);
+
+    // Vérifier si la structure existe
+    if (!$service) {
+        return redirect()->back()->with('error', 'Service not found');
+    }
+
+    // Mettre à jour la structure
+    $service->update($validatedData);
+
+    // Rediriger avec un message de succès
+    return view('serviceall');
     }
 
     /**
@@ -78,6 +104,13 @@ class ServiceController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        // Récupérer le service par son ID
+        $service = Service::findOrFail($id);
+
+        // Supprimer le service
+        $service->delete();
+
+        // Redirection avec un message de succès
+        return redirect()->route('afficherService');
     }
 }

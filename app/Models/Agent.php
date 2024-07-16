@@ -38,4 +38,9 @@ class Agent extends Model
     {
         return $this->hasMany('App\Models\Attributionmateriel');
     }
+
+    public function materiels()
+    {
+        return $this->hasMany('App\Models\Materiel');
+    }
 }
