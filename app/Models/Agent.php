@@ -3,6 +3,8 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
  * @property integer $id
@@ -24,7 +26,7 @@ class Agent extends Model
     protected $fillable = ['service_id', 'nom', 'prenom', 'email', 'fonction', 'created_at', 'updated_at'];
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return BelongsTo
      */
     public function service()
     {
@@ -32,7 +34,7 @@ class Agent extends Model
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return HasMany
      */
     public function attributionmateriels()
     {

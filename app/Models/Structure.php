@@ -18,4 +18,9 @@ class Structure extends Model
      * @var array
      */
     protected $fillable = ['libelle', 'sigle', 'adresse', 'created_at', 'updated_at'];
+
+    public function services()
+    {
+        return $this->hasMany(Service::class);
+    }
 }

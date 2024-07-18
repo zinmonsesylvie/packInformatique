@@ -23,18 +23,8 @@ class ServiceController extends Controller
      */
     public function create()
     {
-        return view('services.service');
-    }
-
-
-    public function showRegistrationForm() {
         $structures = Structure::all();
         return view('services.service', compact('structures'));
-    }
-
-    public function showRegistration() {
-        $structures = Structure::all();
-        return view('services.editservice', compact('structures'));
     }
 
     /**
@@ -51,7 +41,7 @@ class ServiceController extends Controller
         $service->libelle = $request->libelle;
         $service->structure_id = $request->structure_id;
         $service->save();
-        return view('services.serviceall');
+        return redirect()->route("afficherService")->with("success","Service enregistré avec succès");
     }
 
     /**
@@ -67,16 +57,8 @@ class ServiceController extends Controller
      */
     public function edit(string $id)
     {
-       // Récupérer le service par son ID
-       $service = Service::find($id);
-
-       // Vérifier si le service existe
-        if (!$service) {
-            return redirect()->back()->with('error', 'Service not found');
-        }
-
-    // Retourner la vue avec le service à éditer
-    return view('services.editservice', compact('service'));
+        $structures  = Structure::all();
+        return view('services.editservice', compact("service","structures"));
     }
 
     /**
@@ -85,37 +67,19 @@ class ServiceController extends Controller
     public function update(Request $request, string $id)
     {
         // Valider les données
-    $validatedData = $request->validate([
-        'libelle' => 'required|string|max:255',
-    ]);
+        $service->libelle = $request->libelle;
+        $service->structure_id = $request->structure_id;
+        $service->update();
 
-    // Récupérer la structure par son ID
-    $service = Service::find($id);
-
-    // Vérifier si la structure existe
-    if (!$service) {
-        return redirect()->back()->with('error', 'Service not found');
-    }
-
-    // Mettre à jour la structure
-    $service->update($validatedData);
-
-    // Rediriger avec un message de succès
-    return view('services.serviceall');
-    }
+        // Rediriger avec un message de succès
+        return redirect()->route("afficherService")->with("success","Les informations du service  ont été mise à jour");    }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function delete(Service $service)
     {
-        // Récupérer le service par son ID
-        $service = Service::findOrFail($id);
-
-        // Supprimer le service
         $service->delete();
-
-        // Redirection avec un message de succès
-        return redirect()->route('afficherService');
+        return redirect()->route("afficherService")->with("success","Service supprimé avec succès");
     }
 }

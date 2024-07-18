@@ -15,7 +15,12 @@ return new class extends Migration
         Schema::create('services', function (Blueprint $table) {
             $table->id();
             $table->string('libelle');
-            $table->foreignId('structure_id')->constrained('structures');
+            $table->unsignedBigInteger('structure_id');
+             // Ajouter la contrainte de clé étrangère
+             $table->foreign('structure_id')
+             ->references('id')
+             ->on('structures')
+             ->onDelete('cascade');
             $table->timestamps();
         });
 

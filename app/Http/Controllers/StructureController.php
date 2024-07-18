@@ -47,7 +47,7 @@ class StructureController extends Controller
         ]);
 
         // Redirection avec un message de succès
-        return view('structures.structureall');
+        return redirect()->route("afficherStructure")->with("success","Structure enregistrée avec succès");
     }
 
     /**
@@ -65,11 +65,6 @@ class StructureController extends Controller
     {
          // Récupérer la structure par son ID
          $structure = Structure::find($id);
-
-        // Vérifier si la structure existe
-        if (!$structure) {
-            return redirect()->back()->with('error', 'Structure not found');
-        }
 
         // Retourner la vue avec la structure à éditer
         return view('structures.editstructure', compact('structure'));
@@ -90,11 +85,6 @@ class StructureController extends Controller
     // Récupérer la structure par son ID
     $structure = Structure::find($id);
 
-    // Vérifier si la structure existe
-    if (!$structure) {
-        return redirect()->back()->with('error', 'Structure not found');
-    }
-
     // Mettre à jour la structure
     $structure->update($validatedData);
 
@@ -105,15 +95,10 @@ class StructureController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function delete(Structure $structure)
     {
-        // Récupérer la structure par son ID
-        $structure = Structure::findOrFail($id);
-
-        // Supprimer la structure
         $structure->delete();
+        return redirect()->route("afficherStructure")->with("success","Strucutre supprimée avec succès");
 
-        // Redirection avec un message de succès
-        return redirect()->route('afficherStructure');
     }
 }

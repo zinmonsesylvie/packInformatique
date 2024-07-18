@@ -23,10 +23,10 @@
                 </div>
                 <div class="mb-3">
                     <label for="setting-input-2" class="form-label">Structure</label>
-                    <select class="form-control" id="setting-input-2" name="structure_id" required>
-                        <option value="">Sélectionnez une structure</option>
+                    <select class="form-control" id="setting-input-2" name="structure_id" id="structure_id" required>
+                        <option value=""></option>
                         @foreach ($structures as $structure)
-                        <option value="{{ $structure->id }}" {{ $service->structure_id == $structure->id ? 'selected' : '' }}>{{ $structure->libelle }}</option>
+                        <option value="{{ $structure->id }}" {{ $service->structure_id === $structure->id ? 'selected' : '' }}>{{ $structure->libelle }}</option>
                         @endforeach
                     </select>
                     @error('structure_id')

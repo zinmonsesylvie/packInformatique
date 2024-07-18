@@ -47,12 +47,6 @@
             </div><!--//row-->
 
 
-
-
-
-
-
-
             <div class="tab-content" id="orders-table-tab-content">
                 <div class="tab-pane fade show active" id="orders-all" role="tabpanel" aria-labelledby="orders-all-tab">
                     <div class="app-card app-card-orders-table shadow-sm mb-5">
@@ -73,7 +67,8 @@
                                             <th>Type Disque Dur</th>
                                             <th>Durée de Vie</th>
                                             <th>Âge Désuet</th>
-                                            <th>Temps Max Acquisition</th>                                                <th>Agent ID</th>
+                                            <th>Temps Max Acquisition</th>
+                                            <th>Utilisateur</th>                       
                                             <th>Action1</th>
                                             <th>Action2</th>
                                         </tr>
@@ -94,7 +89,7 @@
                                                     <td>{{ $materiel->duree_de_vie }}</td>
                                                     <td>{{ $materiel->age_desuet }}</td>
                                                     <td>{{ $materiel->temps_max_acquisition }}</td>
-                                                    <td>{{ $materiel->agent_id }}</td>
+                                                    <td>{{ $ordinateur->agent->nom }} {{ $ordinateur->agent->prenom }}</td>
                                                     <td>
                                                         <a href="{{ route('editMateriel', $materiel->id) }}" class="btn btn-sm btn-outline-success">Edit</a>
                                                     </td>

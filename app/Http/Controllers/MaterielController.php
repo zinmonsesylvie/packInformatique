@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Agent;
 use App\Models\Materiel;
+use App\Models\Structure;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -25,14 +26,83 @@ class MaterielController extends Controller
      */
     public function create()
     {
-        return view('materiels.materiel');
-    }
-
-    public function showRegistrationForm() {
         $agents = Agent::all();
-    
         return view('materiels.materiel', compact('agents'));
     }
+
+
+    //récupération de la liste des ordinateurs portable
+    public function listeordinateurp()
+    {
+        $materiels = Materiel::all();
+        $ordinateurPortable = $materiels->filter(function ($materiel) {
+        return $materiel->designation === 'ordinateur portable';
+    });
+
+    return view('materiels.ordinateurportable', ['ordinateurPortable' => $ordinateurPortable]);
+    }
+
+    //récupération des ordinateurs de bureau
+    public function listeordinateurb()
+    {
+        $materiels = Materiel::all();
+        $ordinateurBureau = $materiels->filter(function ($materiel) {
+        return $materiel->designation === 'ordinateur de bureau';
+    });
+
+    return view('materiels.ordinateurbureau', ['ordinateurBureau' => $ordinateurBureau]);
+    } 
+
+    //récupération de la liste des imprimantes
+    public function listeimprimante()
+    {
+        $materiels = Materiel::all();
+        $imprimantes = $materiels->filter(function ($materiel) {
+        return $materiel->designation === 'imprimante';
+    });
+
+    return view('materiels.imprimante', ['imprimantes' => $imprimantes]);
+    }
+
+    //récupération de la liste des scanners
+    public function listescanner()
+    {
+        $materiels = Materiel::all();
+        $scanners = $materiels->filter(function ($materiel) {
+        return $materiel->designation === 'scanner';
+    });
+
+    return view('materiels.scanner', ['scanners' => $scanners]);
+    }
+
+    //récupération de la liste des copieurs
+    public function listecopieur()
+    {
+        $materiels = Materiel::all();
+
+        foreach($materiels as $materiel)
+        {
+            $copieur = $materiel->designation;
+            if($copieur == 'copieur')
+            {
+                //
+            }
+        }
+    }
+
+    //récupération de la liste des matériel par structure
+    public function materielstructure()
+    {
+        $structures = Structure::with('services.agents.materiels')->get();
+        return view('materiels.structure', ['structures' => $structures]);
+    }
+
+    //récupération de la liste des matériel par service
+    public function materielservice()
+    {
+        
+    }
+
 
 
     /**
@@ -86,12 +156,10 @@ class MaterielController extends Controller
     $materiel->temps_max_acquisition = $materiel->duree_de_vie + 2;
     $materiel->agent_id = $request->agent_id;
     $materiel->user_id = Auth::user()->id;
-
-    // Enregistrement de l'instance de Materiel
     $materiel->save();
 
     // Redirection ou retour de la vue
-    return view('materiels.materielall');
+    return redirect()->route("afficherMateriel")->with("success","Matériel enregistré avec succès");
 }
 
 

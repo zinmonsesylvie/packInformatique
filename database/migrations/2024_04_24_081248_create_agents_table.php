@@ -17,9 +17,14 @@ return new class extends Migration
             $table->string('prenom');
             $table->string('email');
             $table->string('fonction');
-            $table->foreignId('service_id')->constrained('services');
+            $table->unsignedBigInteger('service_id');
+            $table->foreign('service_id')
+            ->references('id')
+            ->on('services')
+            ->onDelete('cascade');
             $table->timestamps();
         });
+        
     }
 
     /**

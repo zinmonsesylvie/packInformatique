@@ -1,5 +1,3 @@
-
-
 @extends('layouts/template')
 
 @section('content')
@@ -8,7 +6,7 @@
 
             <div class="row g-3 mb-4 align-items-center justify-content-between">
                 <div class="col-auto">
-                    <h1 class="app-page-title mb-0">Services</h1>
+                    <h1 class="app-page-title mb-0">Matériels</h1>
                 </div>
                 <div class="col-auto">
                      <div class="page-utilities">
@@ -49,15 +47,6 @@
             </div><!--//row-->
 
 
-            @if(Session::get('success'))
-            <div class="alert alert-success">
-               {{ Session::get('success') }}
-            </div>
-           @endif
-
-
-
-
             <div class="tab-content" id="orders-table-tab-content">
                 <div class="tab-pane fade show active" id="orders-all" role="tabpanel" aria-labelledby="orders-all-tab">
                     <div class="app-card app-card-orders-table shadow-sm mb-5">
@@ -66,26 +55,40 @@
                                 <table class="table app-table-hover mb-0 text-left">
                                     <thead>
                                         <tr>
-                                          <th>Numéro</th>
-                                          <th>Libelle</th>
-                                          <th>Structure</th>
-                                          <th>action1</th>
-                                          <th>action2</th>
+                                            <th>Numéro</th>
+                                            <th>Désignation</th>
+                                            <th>Année de mise en Service</th>
+                                            <th>Date de fin de vie</th>
+                                            <th>Fabricant</th>
+                                            <th>Modèle</th>
+                                            <th>Durée de Vie</th>
+                                            <th>Âge Désuet</th>
+                                            <th>Temps Max Acquisition</th>
+                                            <th>Utilisateur</th>
+                                            <th>Action1</th>
+                                            <th>Action2</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                    @foreach($services as $service)
-                                        <tr>
-                                            <td>{{ $service->id }}</td>
-                                            <td>{{ $service->libelle }}</td>
-                                            <td>{{ $service->structure->libelle }}</td>
-                                            <td>
-                                              <a href="{{ route('editService', $service->id) }}" class="btn btn-sm btn-outline-success">Edit</a>
-                                            </td>
-                                            <td>
-                                              <a href="{{ route('service.delete', $service->id) }}" class="btn btn-sm btn-outline-danger" onclick="return confirm('Etes-vous sûr de vouloir supprimer cet service?')">delete</a>
-                                            </td>
-                                        </tr>
+                                    @foreach ($scanners as $scanner)
+                                    <tr>
+                                        <td>{{ $scanner->id }}</td>
+                                        <td>{{ $scanner->designation }}</td>
+                                        <td>{{ $scanner->annee_de_service }}</td>
+                                        <td>{{ $scanner->date_max_acquisition }}</td>
+                                        <td>{{ $scanner->fabriquant }}</td>
+                                        <td>{{ $scanner->modele }}</td>
+                                        <td>{{ $scanner->duree_de_vie }}</td>
+                                        <td>{{ $scanner->age_desuet }}</td>
+                                        <td>{{ $scanner->temps_max_acquisition }}</td>
+                                        <td>{{ $ordinateur->agent->nom }} {{ $ordinateur->agent->prenom }}</td>
+                                        <td>
+                                            <a href="{{ route('editMateriel', $materiel->id) }}" class="btn btn-sm btn-outline-success">Edit</a>
+                                        </td>
+                                        <td>
+                                            <a href="{{route('destroyMateriel', $materiel->id)}}" class="btn btn-sm btn-outline-danger" onclick="return confirm('Etes-vous sûr de vouloir supprimer ce materiel?')">Delete</a>
+                                        </td>
+                                    </tr>
                                     @endforeach
                                     </tbody>
                                 </table>

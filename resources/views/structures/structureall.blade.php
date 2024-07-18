@@ -49,10 +49,11 @@
             </div><!--//row-->
 
 
-
-
-
-
+            @if(Session::get('success'))
+            <div class="alert alert-success">
+            {{ Session::get('success') }}
+            </div>
+            @endif
 
 
             <div class="tab-content" id="orders-table-tab-content">
@@ -68,11 +69,16 @@
                                           <th>Sigle</th>
                                           <th>Adresse</th>
                                           <th>action1</th>
-                                          <th>action2</th> 
+                                          <th>action2</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                      @foreach($structures as $structure)
+
+
+
+
+
+                                        @forelse ($structures as $structure)
                                         <tr>
                                             <td>{{ $structure->id }}</td>
                                             <td>{{ $structure->libelle }}</td>
@@ -82,10 +88,17 @@
                                               <a href="{{ route('editStructure', $structure->id) }}" class="btn btn-sm btn-outline-success">Edit</a>
                                             </td>
                                             <td>
-                                              <a href="{{route('destroyStructure', $structure->id)}}" class="btn btn-sm btn-outline-danger" onclick="return confirm('Etes-vous sûr de vouloir supprimer cette structure?')">delete</a>
+                                              <a href="{{route('structure.delete', $structure->id)}}" class="btn btn-sm btn-outline-danger" onclick="return confirm('Etes-vous sûr de vouloir supprimer cette structure?')">delete</a>
                                             </td>
                                         </tr>
-                                      @endforeach
+
+                                        @empty
+
+                                        <tr>
+                                         <td class="cell" colspan="2">AucunE structure ajouté</td>
+
+                                        </tr>
+                                        @endforelse
                                     </tbody>
                                 </table>
                             </div><!--//table-responsive-->

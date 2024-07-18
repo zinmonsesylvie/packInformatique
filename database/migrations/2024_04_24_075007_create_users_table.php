@@ -18,8 +18,12 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->string('password');
             $table->string('fonction');
-            $table->foreignId('service_id')->constrained('services');
+            $table->unsignedBigInteger('service_id');
             $table->rememberToken();
+            $table->foreign('service_id')
+            ->references('id')
+            ->on('services')
+            ->onDelete('cascade'); // Ajouter la suppression en cascade
             $table->timestamps();
         });
     }

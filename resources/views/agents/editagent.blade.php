@@ -44,10 +44,10 @@
                     </div>
                     <div class="mb-3">
                         <label for="setting-input-5" class="form-label">Service</label>
-                        <select class="form-control" id="setting-input-5" name="service_id" required>
-                            <option value="">Sélectionnez un service</option>
+                        <select class="form-control" id="setting-input-5" name="service_id">
+
                             @foreach ($services as $service)
-                            <option value="{{ $service->id }}" {{ $agent->service_id == $service->id ? 'selected' : '' }}>{{ $service->libelle }}</option>
+                            <option value="{{ $service->id }}" {{ $agent->service_id === $service->id ? 'selected' : '' }}>{{ $service->libelle }}</option>
                             @endforeach
                         </select>
                         @error('service_id')

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Agent;
 use App\Models\Service;
 use Illuminate\Http\Request;
+use Barryvdh\DomPDF\Facade\Pdf;
 use App\Http\Controllers\Controller;
 
 class AgentController extends Controller
@@ -23,10 +24,6 @@ class AgentController extends Controller
      */
     public function create()
     {
-        return view('agents.agent');
-    }
-
-    public function showRegistrationForm() {
         $services = Service::all();
         return view('agents.agent', compact('services'));
     }
@@ -77,13 +74,8 @@ class AgentController extends Controller
         // Récupérer la structure par son ID
         $agent = Agent::find($id);
 
-        // Vérifier si la structure existe
-        if (!$agent) {
-            return redirect()->back()->with('error', 'Agent not found');
-        }
-
         // Retourner la vue avec la structure à éditer
-        return view('agents.editagent', compact('agent'));
+        return view('agents.editagent', compact('agent','services'));
     }
 
     /**
@@ -92,34 +84,30 @@ class AgentController extends Controller
     public function update(Request $request, string $id)
     {
         // Valider les données
-    $validatedData = $request->validate([
-        'nom' => 'required|string',
-        'prenom' => 'required|string',
-        'email' => 'required|string|email|unique:agents,email',
-        'fonction' => 'required|string',
-        'service_id' => 'required|integer',
-    ]);
-
-    // Récupérer la structure par son ID
-    $agent = Agent::find($id);
-
-    // Vérifier si la structure existe
-    if (!$agent) {
-        return redirect()->back()->with('error', 'Agent not found');
-    }
-
-    // Mettre à jour la structure
-    $agent->update($validatedData);
+    $agent->nom = $request->nom;
+    $agent->prenom = $request->prenom;
+    $agent->email = $request->email;
+    $agent->fonction = $request->fonction;
+    $agent->service_id = $request->service_id;
+    $agent->update();
 
     // Rediriger avec un message de succès
-    return view('agents.agentall');
+    return redirect()->route("afficherAgent")->with("success","Les informations de l'agent  ont été mise à jour");
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function delete(Agent $agent ){
+        $agent->delete();
+        return redirect()->route("afficherAgent")->with("success","Agent supprimer avec succès");
+    }
+
+
+    public function exportPDF()
     {
-        //
+        $agents = Agent::all();
+        $pdf = Pdf::loadView('agents.pdf', compact('agents'));
+        return $pdf->download('agents.pdf');
     }
 }

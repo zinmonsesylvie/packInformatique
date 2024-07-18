@@ -103,8 +103,7 @@ class LogicielController extends Controller
     $logiciel->update($validatedData);
 
     // Rediriger avec un message de succès
-    return view('logiciels.logicielall');
-
+    return redirect()->route("afficherLogiciel")->with("success","Logiciel enregistré avec succès");
     }
 
     /**

@@ -3,113 +3,84 @@
 
 @section('content')
 
-    <form class="form_container" action="{{ route('materiel') }}" method="POST">
-        @csrf
-        <h1 class="form_container_heading">ENREGISTREMENT MATERIEL</h1>
-        
-        <div class="form_row">
-            <div class="form_column">
-                <label class="form_container_label" for="designation">Désignation</label>
-                <input class="form_container_input" type="text" id="designation" name="designation" placeholder="Désignation" required>
-                
-                <label class="form_container_label" for="annee">Année de service</label>
-                <input class="form_container_input" type="number" id="annee" name="annee_de_service" placeholder="Année de service" required>
-                
-                <label class="form_container_label" for="date">Date maximum d'acquisition</label>
-                <input class="form_container_input" type="number" id="date" name="date_max_acquisition" placeholder="Date maximum d'acquisition" required>
-                
-                <label class="form_container_label" for="fabriquant">Fabriquant</label>
-                <input class="form_container_input" type="text" id="fabriquant" name="fabriquant" placeholder="Fabriquant" required>
-                
-                <label class="form_container_label" for="modele">Modèle</label>
-                <input class="form_container_input" type="text" id="modele" name="modele" placeholder="Modèle" required>
-            </div>
-            
-            <div class="form_column">
-                <label class="form_container_label" for="processeur">Processeur</label>
-                <input class="form_container_input" type="text" id="processeur" name="processeur" placeholder="Processeur" required>
-                
-                <label class="form_container_label" for="memoire">Mémoire Ram</label>
-                <input class="form_container_input" type="text" id="memoire" name="memoire_ram" placeholder="Mémoire Ram" required>
-                
-                <label class="form_container_label" for="capacite">Capacité disque dur</label>
-                <input class="form_container_input" type="text" id="capacite" name="capacite_disque_dur" placeholder="Capacité disque dur" required>
-                
-                <label class="form_container_label" for="type">Type disque dur</label>
-                <input class="form_container_input" type="text" id="type" name="type_disque_dur" placeholder="Type disque dur" required>
-                
-                <label class="form_container_label" for="agent_id">Agent</label>
-                <select class="form_container_input" id="agent_id" name="agent_id" required>
-                    <option value="">Sélectionnez un agent</option>
-                    @foreach ($agents as $agent)
-                        <option value="{{ $agent->id }}">{{ $agent->nom }} {{ $agent->prenom }}</option>
-                    @endforeach
-                </select>
-            </div>
-        </div>
-        
-        <button class="form_container_button" type="submit">Enregistrer</button>
-    </form>
+<select id="choixFormulaire">
+    <option value=""></option>
+    <option value="form1">Formulaire 1</option>
+    <option value="form2">Formulaire 2</option>
+    <option value="form3">Formulaire 3</option>
+</select>
 
-<style>
-   body {
-    font-family: Arial, sans-serif;
-}
+<form id="form1" style="display: none;">
+    <!-- Contenu du formulaire 1 -->
+    <div class="mb-3">
+        <label for="setting-input-1" class="form-label">Nom<span class="ms-2" data-bs-container="body" data-bs-toggle="popover" data-bs-trigger="hover focus"  data-bs-placement="top" data-bs-content="This is a Bootstrap popover example. You can use popover to provide extra info."><svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-info-circle" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+        <path fill-rule="evenodd" d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+        <path d="M8.93 6.588l-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588z"/>
+        <circle cx="8" cy="4.5" r="1"/>
+        </svg></span></label>
+        <input type="text" class="form-control" id="setting-input-1" placeholder="Entrez le nom " name="nom" value="" >
+        @error('nom')
+        <div class=" alert alert-danger">{{ $message }}</div>
+        @enderror
+    </div>
+    <div class="mb-3">
+        <label for="setting-input-2" class="form-label">Prénom</label>
+        <input type="text" class="form-control" id="setting-input-2" placeholder="Entrez le prénom" name="prenom" value="">
+        @error('prenom')
+        <div class=" alert alert-danger">{{ $message }}</div>
+        @enderror
+    </div>
+    <div class="mb-3">
+        <label for="setting-input-3" class="form-label"> Email</label>
+        <input type="email" class="form-control" id="setting-input-3" name="email" placeholder="Entrez le mail" value="">
+        @error('email')
+        <div class=" alert alert-danger">{{ $message }}</div>
+        @enderror
+    </div>
 
-.form_container {
-    display: flex;
-    flex-direction: column;
-    padding: 20px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    background-color: #f9f9f9;
-}
+    <div class="mb-3">
+        <label for="setting-input-3" class="form-label">Contact</label>
+        <input type="text" class="form-control" id="setting-input-3" name="contact" placeholder="Entrez le contact" value="">
+        @error('contact')
+        <div class=" alert alert-danger">{{ $message }}</div>
+        @enderror
+    </div>
 
-.form_container_heading {
-    text-align: center;
-    margin-bottom: 20px;
-}
+</form>
 
-.form_row {
-    display: flex;
-    justify-content: space-between;
-    gap: 50px; /* Espace entre les colonnes */
-}
+<form id="form2" style="display: none;">
+    <!-- Contenu du formulaire 2 -->
+    <div class="mb-3">
+        <label for="setting-input-3" class="form-label">Adresse</label>
+        <input type="text" class="form-control" id="setting-input-3" name="contact" placeholder="Entrez le contact" value="">
+        @error('contact')
+        <div class=" alert alert-danger">{{ $message }}</div>
+        @enderror
+    </div>
+</form>
 
-.form_column {
-    display: flex;
-    flex-direction: column;
-    width: 48%;
-}
+<form id="form3" style="display: none;">
+    <!-- Contenu du formulaire 3 -->
+</form>
 
-.form_container_label {
-    margin-top: 20px;
-    font-weight: bold;
-}
+<script >
 
-.form_container_input {
-    padding: 8px;
-    margin-top: 5px;
-    margin-bottom: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    width: 100%;
-}
+   document.getElementById('choixFormulaire').addEventListener('change', function() {
+    var choix = this.value;
 
-.form_container_button {
-    margin-top: 20px;
-    padding: 10px;
-    background-color: #28a745;
-    color: #fff;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    align-self: center;
-}
+    // Masquer tous les formulaires
+    document.getElementById('form1').style.display = 'none';
+    document.getElementById('form2').style.display = 'none';
+    document.getElementById('form3').style.display = 'none';
 
-.form_container_button:hover {
-    background-color: #218838;
-}
+    // Afficher le formulaire sélectionné
+    document.getElementById(choix).style.display = 'block';
+});
 
-</style>
+
+</script>
+
+
+
+
 @endsection
